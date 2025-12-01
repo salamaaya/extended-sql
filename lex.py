@@ -20,7 +20,6 @@ tokens = (
     'MAX',
     'MIN',
     'VARIABLE',
-    'TABLE',
     'COMMA',
     'PLUS',
     'MINUS',
@@ -38,7 +37,6 @@ tokens = (
     'QUOTE',
     'DOT',
     'SEMICOLON',
-    'ATTRIBUTE',
     'DATE',
     'STRING',
     'GROUPING_VARIABLE'
@@ -91,8 +89,6 @@ t_STAR   = r'\*'
 t_DOT    = r'\.'
 
 '''strings and identifiers'''
-t_TABLE = r'sales' # assuming 'sales' is the only table for now to reduce complexity
-t_ATTRIBUTE = r'cust|prod|day|month|year|state|quant|date' # assuming these are the only attributes based on the sales table schema
 t_COMMA  = r','
 t_DATE = r'\'\d{4}-\d{2}-\d{2}\''
 t_STRING = rf'{t_QUOTE}([^\\{t_QUOTE}]|\\.)*{t_QUOTE}'
@@ -145,23 +141,5 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Build the lexer
-lexer = lex.lex()
-
-# Uncomment if you want to test it out
-# data = '''
-# SELECT *
-# FROM sales
-# WHERE quant > 10
-# GROUP BY state; x
-# SUCH THAT x.cust = cust AND x.prod = prod AND x.cust != 'Alice';
-# '''
-
-# # Give the lexer some input
-# lexer.input(data)
-
-# # Tokenize
-# while True:
-#     tok = lexer.token()
-#     if not tok: 
-#         break      # No more input
-#     print(tok)
+def lexer():
+    return lex.lex()
