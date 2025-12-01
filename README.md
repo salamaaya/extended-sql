@@ -16,3 +16,7 @@ python run.py [file.esql]
 
 Note: file.esql is an optional argument, if it is provided,
 input will be read from the file. Otherwise, you are asked to provide valid esql input. To terminate input, simply type "done".
+
+# References
+
+The lexer and parser were inspired by the examples at https://www.dabeaz.com/ply/ply.html#ply_nn9

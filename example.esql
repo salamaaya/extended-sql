@@ -1,0 +1,5 @@
+SELECT cust, prod, count(x.prod)
+FROM sales
+WHERE quant > 10 AND prod = 'Apple'
+GROUP BY cust, prod; x
+SUCH THAT x.state = 'NJ'
