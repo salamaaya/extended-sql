@@ -1,7 +1,7 @@
-from generator import main as generator
-from _generated import query as _generated
+from generate.generator import main as generator
+from generate._generated import query as _generated
 
-from sql import query as sql
+from test.sql import query as sql
 
 
 def test_generator():
