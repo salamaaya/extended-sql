@@ -19,7 +19,7 @@ tokens = (
     'AVG',
     'MAX',
     'MIN',
-    'VARIABLE',
+    'ID',
     'COMMA',
     'PLUS',
     'MINUS',
@@ -34,12 +34,10 @@ tokens = (
     'LESS_EQUAL',
     'NOT_EQUAL',
     'NUMBER',
-    'QUOTE',
-    'DOT',
     'SEMICOLON',
     'DATE',
     'STRING',
-    'GROUPING_VARIABLE'
+    'GROUPING_ID'
 )
 
 reserved = {
@@ -83,15 +81,14 @@ reserved = {
 
 # Regular expression rules for simple tokens
 '''punctuation'''
-t_QUOTE  = r'\''
+quote  = r'\''
 t_SEMICOLON = r';'
 t_STAR   = r'\*'
-t_DOT    = r'\.'
 
 '''strings and identifiers'''
 t_COMMA  = r','
 t_DATE = r'\'\d{4}-\d{2}-\d{2}\''
-t_STRING = rf'{t_QUOTE}([^\\{t_QUOTE}]|\\.)*{t_QUOTE}'
+t_STRING = rf'{quote}([^\\{quote}]|\\.)*{quote}'
 
 '''arithmetic and boolean operators'''
 t_PLUS    = r'\+'
@@ -127,9 +124,9 @@ def t_SUCH_THAT(t):
     t.type = 'SUCH_THAT'
     return t
 
-def t_VARIABLE(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value,'VARIABLE')    # Check for reserved words
+def t_ID(t):
+    r'[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)?'
+    t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
 
 # A string containing ignored characters (spaces and tabs)
