@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from lex import tokens
-from esql import ESQL
+from classes.esql import ESQL
 
 """this takes the tokens from lex.py and defines the grammar rules for parsing
 and building the ESQL object."""
@@ -22,8 +22,8 @@ def p_query(p):
     p[0].from_tables = p[2]
     p[0].where = p[3]
     p[0].group_by = p[4]
-    p[0].having = p[5]
-    p[0].such_that = p[6]
+    p[0].such_that = p[5]
+    p[0].having = p[6]
 
 def p_select_clause(p):
     '''select_clause : SELECT STAR
@@ -168,5 +168,4 @@ def p_empty(p):
 def p_error(p):
     print("Syntax error at '%s'" % p)
 
-def parser():
-    return yacc.yacc()
+parser = yacc.yacc()

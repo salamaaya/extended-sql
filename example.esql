@@ -1,8 +1,6 @@
-select cust, sum(x.quant), sum(y.quant), sum(z.quant)
+select cust, count(ny.quant), sum(nj.quant), max(ct.quant)
 from sales
-group by cust; x, y, z
-such that x.state = 'NY'
-and y.state = 'NJ'
-and z.state = 'CT'
-having sum(x.quant) > 2 * sum(y.quant) or avg(x.quant) >
-avg(z.quant)
+group by cust; ny, nj, ct
+such that ny.cust = cust and ny.state = 'NY',
+nj.cust = cust and nj.state = 'NJ',
+ct.cust = cust and ct.state = 'CT'

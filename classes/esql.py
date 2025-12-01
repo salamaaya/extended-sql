@@ -33,10 +33,10 @@ class ESQL:
 
     def __str__(self):
         return f"""
-        Select Clause: {self.select}
-        Tables:{self.from_tables}
-        Where Clause:{self.where}
-        Group By Clause: {self.group_by}
-        Having Clause:{self.having}
-        Such That Clause:{self.such_that}
-        """
+            Select Clause: {self.select}
+            Tables:{self.from_tables}
+            Where Clause:{self.where}
+            Group By Clause: {self.group_by}
+            Having Clause:{self.having}
+            Such That Clause:{self.such_that}
+            """

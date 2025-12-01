@@ -1,7 +1,7 @@
 import getopt, sys
 from lex import lexer
 from parse import parser
-
+from classes.phi import Phi
 
 def main():
     esql = ""
@@ -17,7 +17,7 @@ def main():
     for o, a in opts:
         if o == "-v":
             verbose = True
-    
+
     if args:
         file = args[0]
         with open(file, 'r') as f:
@@ -32,24 +32,27 @@ def main():
 
     if verbose:
         print("=======LEXING=======")
-    esql_lexer = lexer()
-    esql_lexer.input(esql)
-
-    # Tokenize
-    while True:
-        tok = esql_lexer.token()
-        if not tok: 
-            break      # No more input
-        if verbose:
+        lexer.input(esql)
+        # Tokenize
+        while True:
+            tok = lexer.token()
+            if not tok: 
+                break      # No more input
             print(tok)
 
     if verbose:
         print("=======PARSING=======")
-    esql_parser = parser()
-    parsed = esql_parser.parse(esql)
+    parsed_esql = parser.parse(esql)
     
     if verbose:
-        print(parsed)
+        print("ESQL Object:")
+        print(parsed_esql)
+    
+    phi = Phi()
+    phi.convert(parsed_esql)
+    if verbose:
+        print("Phi Operator:")
+        print(phi)
     
 if __name__ == "__main__":
     main()
