@@ -1,6 +1,5 @@
 import subprocess
 
-
 def main():
     """
     This is the generator code. It should take in the MF structure and generate the code
@@ -53,8 +52,11 @@ if "__main__" == __name__:
     # Write the generated code to a file
     open("_generated.py", "w").write(tmp)
     # Execute the generated code
-    subprocess.run(["/opt/homebrew/anaconda3/bin/python", "_generated.py"])
 
+    # if using environment using conda installed by brew, then uncomment the following line
+    # and comment the next line
+    # subprocess.run(["/opt/homebrew/anaconda3/bin/python", "_generated.py"])
+    subprocess.run(["python", "_generated.py"])
 
 if "__main__" == __name__:
     main()
