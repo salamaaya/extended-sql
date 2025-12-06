@@ -2,12 +2,16 @@ import getopt, sys
 from lex import lexer
 from parse import parser
 from classes.phi import Phi
+from generate import generator
 
 def mf_struct(phi):
-    result = "mf_struct = {}\n"
-    result += f"mf_struct['{phi.v[0]}'] = []\n"
+    result = """
+    mf_struct = {}"""
+    result += f"""
+    mf_struct['{phi.v[0]}'] = []"""
     for f in phi.f_vect:
-        result += f"mf_struct['{f}'] = 0\n"
+        result += f"""
+    mf_struct['{f}'] = 0"""
     return result
 
 def main():
@@ -15,17 +19,21 @@ def main():
     verbose = False
     opt = 'Phi'
     phi = Phi()
+    output = None
+    verbose = False
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], ":v", ["help"])
+        opts, args = getopt.getopt(sys.argv[1:], ":vo:", ["help"])
     except getopt.GetoptError as err:
-        # print help information and exit:
-        print(err)  # will print something like "option -a not recognized"
+        print(err)
         sys.exit(2)
-    verbose = False
-    for o, _ in opts:
+
+    for o, a in opts:
         if o == "-v":
             verbose = True
+        if o == "-o":
+            output = a
+            print(output)
         if o == "-help":
             print("usage: python run.py [-v] [-help] [example.esql]")
             sys.exit()
@@ -120,6 +128,8 @@ def main():
         print(phi)
         print("=======MF Struct=======")
         print(mf_struct_str)
+
+    generator.generate(phi, mf_struct_str, output_file=output)
     
 if __name__ == "__main__":
     main()

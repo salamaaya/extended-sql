@@ -11,10 +11,12 @@ pip install -r requirements.txt
 
 - To run an ESQL query:
 ```
-python run.py [-v] [example.esql]
+python run.py [-v] [-o outputfile.table] [example.esql]
 ```
 
 * If the ```-v``` option is provided, verbose output will be printed, such as lexing and parsing.
+* If the ```-o``` option is provided, you must give an output file name, and the generated table will be written to the file,
+* rather than stdout. 
 
 * ```example.esql``` is an optional argument, if it is provided,
 input will be read from the file. Otherwise, you are asked to provide valid esql input. To terminate input, simply type "done".

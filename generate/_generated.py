@@ -18,10 +18,23 @@ def query():
                             cursor_factory=psycopg2.extras.DictCursor)
     cur = conn.cursor()
     cur.execute("SELECT * FROM sales")
+    rows = cur.fetchall()
     
     _global = []
     
-    for row in cur:
+    mf_struct = {}
+    mf_struct['cust'] = []
+    mf_struct['count_1_quant'] = 0
+    mf_struct['sum_2_quant'] = 0
+    mf_struct['max_3_quant'] = 0
+    
+    for row in rows:
+        if row['cust'] not in mf_struct['cust']:
+            mf_struct['cust'] += [row['cust']]
+    
+    print(mf_struct)
+    
+    for row in rows:
         if row['quant'] > 10:
             _global.append(row)
     

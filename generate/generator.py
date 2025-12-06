@@ -1,20 +1,17 @@
 import subprocess
 
-def main():
-    """
-    This is the generator code. It should take in the MF structure and generate the code
-    needed to run the query. That generated code should be saved to a 
-    file (e.g. _generated.py) and then run.
-    """
-
-    body = """
-    for row in cur:
-        if row['quant'] > 10:
-            _global.append(row)
+def populate(phi):
+    '''# TABLE SCAN 1: populate mf-struct with distinct values of grouping attribute (V)'''
+    gv = phi.v[0]
+    return f"""
+    for row in rows:
+        if row['{gv}'] not in mf_struct['{gv}']:
+            mf_struct['{gv}'] += [row['{gv}']]
     """
 
-    # Note: The f allows formatting with variables.
-    #       Also, note the indentation is preserved.
+def 
+
+def generate(phi, mf_struct, output_file=None):
     tmp = f"""
 import os
 import psycopg2
@@ -35,9 +32,11 @@ def query():
                             cursor_factory=psycopg2.extras.DictCursor)
     cur = conn.cursor()
     cur.execute("SELECT * FROM sales")
+    rows = cur.fetchall()
     
     _global = []
-    {body}
+    {mf_struct}
+    {populate(phi)}
     
     return tabulate.tabulate(_global,
                         headers="keys", tablefmt="psql")
@@ -56,7 +55,9 @@ if "__main__" == __name__:
     # if using environment using conda installed by brew, then uncomment the following line
     # and comment the next line
     # subprocess.run(["/opt/homebrew/anaconda3/bin/python", "_generated.py"])
-    subprocess.run(["python", "_generated.py"])
-
-if "__main__" == __name__:
-    main()
+    if output_file:
+        result = subprocess.run(["/opt/homebrew/anaconda3/bin/python", "_generated.py"], capture_output=True, text=True)
+        with open(output_file, "w+") as f:
+            f.write(result.stdout)
+    else:
+        subprocess.run(["/opt/homebrew/anaconda3/bin/python", "_generated.py"])
