@@ -4,16 +4,6 @@ from parse import parser
 from classes.phi import Phi
 from generate import generator
 
-def mf_struct(phi):
-    result = """
-    mf_struct = {}"""
-    result += f"""
-    mf_struct['{phi.v[0]}'] = []"""
-    for f in phi.f_vect:
-        result += f"""
-    mf_struct['{f}'] = 0"""
-    return result
-
 def main():
     esql = ""
     verbose = False
@@ -121,15 +111,11 @@ def main():
             print(parsed_esql)
             phi.convert(parsed_esql)
     
-    mf_struct_str = mf_struct(phi)
-    
     if verbose:
         print("=======Phi Operator=======")
         print(phi)
-        print("=======MF Struct=======")
-        print(mf_struct_str)
 
-    generator.generate(phi, mf_struct_str, output_file=output)
+    generator.generate(phi, output_file=output)
     
 if __name__ == "__main__":
     main()
