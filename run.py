@@ -109,7 +109,7 @@ def main():
         if verbose:
             print("ESQL Object:")
             print(parsed_esql)
-            phi.convert(parsed_esql)
+        phi.convert(parsed_esql)
     
     if verbose:
         print("=======Phi Operator=======")

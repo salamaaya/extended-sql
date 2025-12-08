@@ -3,7 +3,7 @@ import psycopg2
 import psycopg2.extras
 import tabulate
 from dotenv import load_dotenv
-
+import sys
 
 def query():
     """
@@ -18,7 +18,11 @@ def query():
     conn = psycopg2.connect("dbname="+dbname+" user="+user+" password="+password,
                             cursor_factory=psycopg2.extras.DictCursor)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM sales WHERE quant > 10")
+
+    with open(sys.argv[1], 'r') as f:
+        sql = f.read()
+
+    cur.execute(sql)
 
     return tabulate.tabulate(cur.fetchall(),
                              headers="keys", tablefmt="psql")
