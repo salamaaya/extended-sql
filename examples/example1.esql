@@ -1,0 +1,10 @@
+select cust,
+    SUM(y19.quant),
+    COUNT(large.quant),
+    MAX(p1.quant)
+FROM sales
+GROUP BY cust; y19, large, p1
+SUCH THAT
+  y19.cust = cust AND y19.year = 2019,
+  large.cust = cust AND large.quant > 50,
+  p1.cust = cust AND p1.prod = 'Apple'

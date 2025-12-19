@@ -2,7 +2,7 @@
 
 mkdir output
 
-for i in $(seq 0 5);
+for i in $(seq 0 2);
 do
     python ../run.py ../examples/example${i}.esql 2>/dev/null | sort > output/ex${i}.esql.out
     python sql.py ../examples/example${i}.sql 2>/dev/null | sort  > output/ex${i}.sql.out

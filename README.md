@@ -15,8 +15,7 @@ python run.py [-v] [-o outputfile.table] [example.esql]
 ```
 
 * If the ```-v``` option is provided, verbose output will be printed, such as lexing and parsing.
-* If the ```-o``` option is provided, you must give an output file name, and the generated table will be written to the file,
-* rather than stdout. 
+* If the ```-o``` option is provided, you must give an output file name, and the generated table will be written to the file, rather than stdout. 
 
 * ```example.esql``` is an optional argument, if it is provided,
 input will be read from the file. Otherwise, you are asked to provide valid esql input. To terminate input, simply type "done".
@@ -27,6 +26,17 @@ input will be read from the file. Otherwise, you are asked to provide valid esql
 2. Phi Operator
 ```
 If you choose 1, type the ESQL query and type "done" when you're done. This is equivalent to putting the query in a ```.esql``` file. If you press 2, you will be asked to provide the 6 differen arguments to Phi.
+
+* Note: taking in ESQL input is preferred and heavily tested.
+
+# Testing
+
+```
+cd test
+./test.sh
+```
+
+* Note: ESQl and SQL examples can be found under the ```examples/``` folder.
 
 # References
 

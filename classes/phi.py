@@ -19,15 +19,6 @@ class Phi:
             re.IGNORECASE
         )
 
-        # used to replace grouping vars with their id's in a condition
-        pred_pattern = re.compile(r'\b(?P<gv>[A-Za-z_][A-Za-z0-9_]*)\.(?P<attr>[A-Za-z_][A-Za-z0-9_]*)\b')
-        def _map_gv_occurrence(m):
-            gv = m.group('gv')
-            attr = m.group('attr')
-            if gv in gv_map:
-                return f"{gv_map[gv]}.{attr}"
-            return m.group(0)
-
         # find the mapping before anything
         gvs = esql.group_by[-1]
         id = 1
@@ -72,13 +63,37 @@ class Phi:
             self.v += [group]
         
         # 5. predicates for grouping vars
-        for pred in esql.such_that:
-            if pred.lower() == 'and' or pred.lower() == 'or' or pred == ',': 
-                # ignore the boolean operators/commas, we only want a list of conditions
-                continue
-            mapped = pred_pattern.sub(_map_gv_occurrence, pred)
+        qual_re = re.compile(r'\b(?P<gv>[A-Za-z_][A-Za-z0-9_]*)\.(?P<attr>[A-Za-z_][A-Za-z0-9_]*)\b')
+        # match identifiers that are NOT preceded by a dot and NOT followed by '(' (to avoid function names)
+        id_re = re.compile(r'(?<!\.)\b(?P<id>[A-Za-z_][A-Za-z0-9_]*)\b(?!\s*\()')
 
-            # append the mapped predicate
+        def _map_qual(m):
+            gv = m.group('gv')
+            attr = m.group('attr')
+            if gv in gv_map:
+                return f"{gv_map[gv]}.{attr}"
+            return m.group(0)
+
+        def _map_id(m):
+            ident = m.group('id')
+            # skip boolean operators, logicals, and numeric-like tokens
+            if ident.lower() in ('and', 'or', 'not', 'true', 'false', 'null'):
+                return ident
+            # don't convert function names (lookahead prevented '(') or numeric tokens
+            # convert to row['attr']
+            return f"row['{ident}']"
+
+        for pred in esql.such_that:
+            if isinstance(pred, str) and (pred.lower() in ('and', 'or') or pred == ','):
+                continue
+
+            text = str(pred)
+            mapped = qual_re.sub(_map_qual, text)
+            parts = re.split(r"('(?:\\.|[^'])*')", mapped)
+            for i in range(0, len(parts), 2):
+                parts[i] = id_re.sub(_map_id, parts[i])
+
+            mapped = ''.join(parts)
             self.pred_list.append(mapped)
         
         # 6. having

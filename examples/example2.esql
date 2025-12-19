@@ -1,0 +1,5 @@
+select prod, max(ny.quant), min(ny.quant), max(nj.quant), min(nj.quant)
+from sales
+group by prod; ny, nj
+such that ny.prod = prod and ny.state = 'NY' and ny.quant > 0,
+nj.prod = prod and nj.state = 'NJ' and nj.quant > 0
